@@ -1,22 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+
+const colors = require("./src/constants/colors")
+
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     presets: [require("nativewind/preset")],
     theme: {
         extend: {
-            colors: {
-                primary: { DEFAULT: "#372AAC", soft: "#EEF2FF" },
-                foreground: "#0F172B",
-                muted: "#45556C",
-                border: "#E2E8F0",
-                background: "#F8FAFC",
-                card: "#FFFFFF",
-                success: { DEFAULT: "#016630", soft: "#DCFCE7" },
-                danger: { DEFAULT: "#C10007", soft: "#FFE2E2" },
-                warning: { DEFAULT: "#973C00", soft: "#FEF3C6" },
-                info: { DEFAULT: "#1447E6", soft: "#DBEAFE" },
-                skeleton: "#EBEFF5",
-            },
+            colors: { colors },
             borderRadius: {
                 chip: "10px",
                 card: "14px",
@@ -31,6 +22,12 @@ module.exports = {
                 callout: ["14px", { lineHeight: "20px" }],
                 footnote: ["13px", { lineHeight: "18px" }],
                 caption: ["12px", { lineHeight: "16px" }],
+            },
+            fontFamily: {
+                sans: ["Inter_400Regular"],
+                "sans-medium": ["Inter_500Medium"],
+                "sans-semibold": ["Inter_600SemiBold"],
+                "sans-bold": ["Inter_700Bold"],
             },
         },
     },
