@@ -1,3 +1,4 @@
+import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -12,32 +13,44 @@ import "../global.css";
 
 SplashScreen.preventAutoHideAsync()
 
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
+function RootNavigator() {
+  const { status, session } = useAuth()
+  const [fontsLoaded, fontError] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
   })
 
+  const ready = (fontsLoaded || fontError) && status !== "loading"
+
   useEffect(() => {
-    if (loaded || error) {
+    if (ready) {
       SplashScreen.hideAsync()
     }
-  }, [loaded, error])
+  }, [ready])
 
-  if (!loaded && !error) return null
+  if (!ready) return null
 
-  const isSignedIn = true;
+  // const isSignedIn = true;
+  const isStudent = status === "signedIn" && session?.role === "STUDENT"
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!isSignedIn}>
+      <Stack.Protected guard={status === "signedOut"}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
-      <Stack.Protected guard={isSignedIn}>
+      <Stack.Protected guard={isStudent}>
         <Stack.Screen name="(student)" />
       </Stack.Protected>
     </Stack>
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootNavigator />
+    </AuthProvider>
   )
 }
