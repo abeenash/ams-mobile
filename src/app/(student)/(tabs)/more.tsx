@@ -30,7 +30,6 @@ export default function MoreScreen() {
 
   return (
     <Screen edges={["top"]} className="gap-4">
-      <Text variant="title1">More</Text>
       <Text variant="headline">{session?.fullName}</Text>
       <Text variant="callout" tone="muted">
         {session?.email}

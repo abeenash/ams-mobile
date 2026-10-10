@@ -1,4 +1,5 @@
 import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
+import { queryClient } from "@/lib/query-client";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -6,8 +7,10 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "../global.css";
 
@@ -36,21 +39,26 @@ function RootNavigator() {
   const isStudent = status === "signedIn" && session?.role === "STUDENT"
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={status === "signedOut"}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-      <Stack.Protected guard={isStudent}>
-        <Stack.Screen name="(student)" />
-      </Stack.Protected>
-    </Stack>
+    <>
+      <StatusBar style="dark" />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={status === "signedOut"}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+        <Stack.Protected guard={isStudent}>
+          <Stack.Screen name="(student)" />
+        </Stack.Protected>
+      </Stack>
+    </>
   )
 }
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootNavigator />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }

@@ -1,5 +1,6 @@
 import { setAccessToken, setUnauthorizedHandler } from "@/lib/api/auth-token";
 import { ApiError } from "@/lib/api/errors";
+import { queryClient } from "@/lib/query-client";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { login } from "./api";
 import { isTokenExpired } from "./jwt";
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAccessToken(null)
         setSession(null)
         setStatus("signedOut")
+        queryClient.clear()
         await clearSession()
     }, [])
 

@@ -1,15 +1,18 @@
 import { Tabs } from "expo-router";
 import { BookOpen, CalendarCheck, House, LayoutGrid, Megaphone } from "lucide-react-native";
 
+import { AppHeader } from "@/components/ui/AppHeader";
 import colors from "@/constants/colors";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        header: ({ options }) => <AppHeader title={options.title ?? ""} />,
         tabBarActiveTintColor: colors.primary.DEFAULT,
         tabBarInactiveTintColor: colors.muted,
+        tabBarAllowFontScaling: false,
         tabBarLabelStyle: { fontFamily: "Inter_500Medium", fontSize: 12 },
         tabBarStyle: {
           backgroundColor: colors.card,
@@ -23,6 +26,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
+          headerShown: false,
           tabBarIcon: ({ color }) => <House color={color} size={24} />,
         }}
       />
