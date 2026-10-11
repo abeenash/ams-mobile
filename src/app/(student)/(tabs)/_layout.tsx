@@ -13,7 +13,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.primary.DEFAULT,
         tabBarInactiveTintColor: colors.muted,
         tabBarAllowFontScaling: false,
-        tabBarLabelStyle: { fontFamily: "Inter_500Medium", fontSize: 12 },
+        tabBarLabelStyle: { fontFamily: "Inter_500Medium", fontSize: 11 },
         tabBarStyle: {
           backgroundColor: colors.card,
           borderTopColor: colors.border,

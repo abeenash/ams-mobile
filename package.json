@@ -46,7 +46,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1"
   },
   "private": true
 }

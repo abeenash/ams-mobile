@@ -1,5 +1,6 @@
 import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
 import { queryClient } from "@/lib/query-client";
+import { useAppFocus } from "@/lib/use-app-focus";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -17,6 +18,7 @@ import "../global.css";
 SplashScreen.preventAutoHideAsync()
 
 function RootNavigator() {
+  useAppFocus()
   const { status, session } = useAuth()
   const [fontsLoaded, fontError] = useFonts({
     Inter_400Regular,
