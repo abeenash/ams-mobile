@@ -32,7 +32,7 @@ export function toApiError(error: unknown): ApiError {
     if (axios.isAxiosError(error)) {
         if (!error.response) {
             if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
-                return new ApiError("timeout", "The server took too long to response. Please try again.")
+                return new ApiError("timeout", "The server took too long to respond. Please try again.")
             }
             return new ApiError("network", "Can't reach the server. Check your connection and try again.")
         }

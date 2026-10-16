@@ -11,6 +11,7 @@ export type SubjectSummary = {
     subjectId: number
     subjectName: string
     subjectCode: string
+    teacherName: string | null
     present: number
     total: number
 }

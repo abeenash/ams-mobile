@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/Button";
 import { StatusChip } from "@/components/ui/Chip";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { ErrorState } from "@/components/ui/ErrorState";
 import { Text } from "@/components/ui/Text";
 import colors from "@/constants/colors";
-import { toApiError } from "@/lib/api/errors";
+import { hasBlockingFailure, queryFailureMessage } from "@/lib/query-state";
 import { CalendarCheck } from "lucide-react-native";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { ActivityIndicator, RefreshControl, SectionList, View } from "react-native";
 import { groupByDate } from "../grouping";
 import { useAttendanceHistory, useAttendanceSummary } from "../queries";
@@ -37,38 +37,39 @@ function AttendanceRow({ record, isFirst, isLast }: RowProps) {
     )
 }
 
-export function AttendanceHistory() {
-    const [subjectId, setSubjectId] = useState<number | undefined>(undefined)
+type AttendanceHistoryProps = {
+    fixedSubjectId?: number
+    header?: ReactElement
+}
+
+export function AttendanceHistory({ fixedSubjectId, header }: AttendanceHistoryProps) {
+    const [pickedId, setPickedId] = useState<number | undefined>(undefined)
+    const subjectId = fixedSubjectId ?? pickedId
     const summary = useAttendanceSummary()
     const history = useAttendanceHistory(subjectId)
 
     const records = history.data?.pages.flatMap((page) => page.content) ?? []
     const sections = groupByDate(records)
 
-    const filter = summary.data ? (
+    const filter = fixedSubjectId === undefined && summary.data ? (
         <View className="pt-4">
-            <SubjectFilter subjects={summary.data} selectedId={subjectId} onSelect={setSubjectId} />
+            <SubjectFilter subjects={summary.data} selectedId={pickedId} onSelect={setPickedId} />
         </View>
     ) : null
 
-    if (history.isPending) {
+    if (history.data === undefined) {
         return (
             <View className="flex-1">
                 {filter}
-                <HistorySkeleton />
-            </View>
-        )
-    }
-
-    if (history.isError) {
-        return (
-            <View className="flex-1">
-                {filter}
-                <EmptyState
-                    icon={CalendarCheck}
-                    title="Couldn't load attendance"
-                    message={toApiError(history.error).message}
-                    action={<Button label="Retry" size="sm" onPress={() => void history.refetch()} />} />
+                {hasBlockingFailure(history) ? (
+                    <ErrorState
+                        title="Couldn't load attendance"
+                        message={queryFailureMessage(history)}
+                        onRetry={() => void history.refetch()}
+                    />
+                ) : (
+                    <HistorySkeleton />
+                )}
             </View>
         )
     }
@@ -97,6 +98,7 @@ export function AttendanceHistory() {
                         message="Records appear here once your teachers mark attendance."
                     />
                 }
+                ListHeaderComponent={header}
                 ListFooterComponent={
                     history.isFetchingNextPage ?
                         <ActivityIndicator className="py-4 text-primary" /> : null

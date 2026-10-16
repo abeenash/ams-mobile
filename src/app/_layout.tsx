@@ -1,4 +1,5 @@
 import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
+import "@/lib/online";
 import { queryClient } from "@/lib/query-client";
 import { useAppFocus } from "@/lib/use-app-focus";
 import {

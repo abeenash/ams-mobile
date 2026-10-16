@@ -2,14 +2,21 @@ import { Tabs } from "expo-router";
 import { BookOpen, CalendarCheck, House, LayoutGrid, Megaphone } from "lucide-react-native";
 
 import { AppHeader } from "@/components/ui/AppHeader";
+import { OfflineBanner } from "@/components/ui/OfflineBanner";
 import colors from "@/constants/colors";
+import { View } from "react-native";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: true,
-        header: ({ options }) => <AppHeader title={options.title ?? ""} />,
+        header: ({ options }) => (
+          <View>
+            <AppHeader title={options.title ?? ""} />
+            <OfflineBanner />
+          </View>
+        ),
         tabBarActiveTintColor: colors.primary.DEFAULT,
         tabBarInactiveTintColor: colors.muted,
         tabBarAllowFontScaling: false,
