@@ -64,8 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signIn = useCallback(async (email: string, password: string) => {
         const { token, role, fullName } = await login(email, password)
 
-        if (role !== "STUDENT") {
-            throw new ApiError("forbidden", "Teacher and admin screens are coming soon. Please sign in with a student account for now.",)
+        if (role === "ADMIN") {
+            throw new ApiError("forbidden", "Admin accounts cannot use the mobile app. Please sign in with a student or teacher account.",)
         }
 
         const next: Session = { token, role, fullName, email }

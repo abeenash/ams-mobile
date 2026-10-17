@@ -38,8 +38,8 @@ function RootNavigator() {
 
   if (!ready) return null
 
-  // const isSignedIn = true;
   const isStudent = status === "signedIn" && session?.role === "STUDENT"
+  const isTeacher = status === "signedIn" && session?.role === "TEACHER"
 
   return (
     <>
@@ -50,6 +50,9 @@ function RootNavigator() {
         </Stack.Protected>
         <Stack.Protected guard={isStudent}>
           <Stack.Screen name="(student)" />
+        </Stack.Protected>
+        <Stack.Protected guard={isTeacher}>
+          <Stack.Screen name="(teacher)" />
         </Stack.Protected>
       </Stack>
     </>
